@@ -1,12 +1,16 @@
 require 'sinatra'
 require 'open-uri'
 require 'nokogiri'
+require 'json'
 
 get '/' do
+  erb :shorts_weather
+end
+
+get '/get_weather' do
   nine_til_four_url = "http://www.accuweather.com/en/gb/isleworth/tw7-6/hourly-weather-forecast/328288?hour=33"
   weather = get_weather_for(nine_til_four_url)
-  @shorts_weather = is_it_shorts_weather?(occurances_of_rain(weather[:forecast]), average_temp(weather[:temperatures]))
-  erb :shorts_weather
+  is_it_shorts_weather?(occurances_of_rain(weather[:forecast]), average_temp(weather[:temperatures])).to_s
 end
 
 def is_it_shorts_weather? occurances_of_rain, average_temp

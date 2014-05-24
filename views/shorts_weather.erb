@@ -8,12 +8,10 @@
   </head>
   <body>
     <div class=question>Is It Shorts Weather Tomorrow?</div>
-    <div class="answer <%= @shorts_weather ? "yes" : "no" %>">
-      <% if @shorts_weather %>
-        Yes
-      <% else %>
-        No
-      <% end %>
+    <div class="answer">
+      <img src='loading.gif' class=loading>
     </div>
+    <script type='text/javascript' src='https://code.jquery.com/jquery-1.11.1.min.js'></script>
+    <script type='text/javascript' src='shorts_weather.js'></script>
   </body>
 </html>

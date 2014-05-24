@@ -18,15 +18,17 @@ body {
 .answer {
   width: 100%;
   text-align: center;
-  font-size: 60px;
   padding: 30px 10px;
   box-sizing: border-box;
+  background-color: #57565C;
 }
 
-.answer.no {
+.no {
   background-color: #C7463D;
+  font-size: 60px;
 }
 
-.answer.yes {
+.yes {
   background-color: #75B536;
+  font-size: 60px;
 }

@@ -1,11 +1,32 @@
-.answer {
+body {
+  font-family: 'Julius Sans One', sans-serif;
+  line-height: 1.6;
+  padding: 0;
+  margin: 0;
+  background-color: #2C343C;
+}
+
+.question {
+  width: 100%;
+  text-align: center;
   font-size: 44px;
+  color: #fff;
+  padding: 30px 10px;
+  box-sizing: border-box;
 }
 
-.yes {
-  color: green;
+.answer {
+  width: 100%;
+  text-align: center;
+  font-size: 60px;
+  padding: 30px 10px;
+  box-sizing: border-box;
 }
 
-.no {
-  color: red;
+.answer.no {
+  background-color: #C7463D;
+}
+
+.answer.yes {
+  background-color: #75B536;
 }

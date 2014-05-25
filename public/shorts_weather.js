@@ -4,7 +4,16 @@ $(document).ready(function(){
 
 function setup(){
   navigator.geolocation.getCurrentPosition(function(position){
+    getAddress(position.coords.latitude, position.coords.longitude);
     getWeather(position.coords.latitude, position.coords.longitude);
+  });
+}
+
+function getAddress(lat, long){
+  $.ajax({
+    url: "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long
+  }).done(function(response){
+    $(".address").text(response.results[0].formatted_address);
   });
 }
 

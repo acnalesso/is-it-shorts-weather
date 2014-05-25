@@ -16,7 +16,7 @@ end
 def tomorrows_hourly_forecast_for(lat, long)
   response = weather.get("#{lat},#{long}?units=si")
   body = JSON.parse(response.body)
-  body['hourly']['data'].map { |hour| get_temp_and_summary(hour) if (Time.at(hour['time']).day == (DateTime.now + 1).day) }
+  body['hourly']['data'].map { |hour| get_temp_and_summary(hour) if tomorrow?(Time.at(hour['time'])) }
 end
 
 def weather
@@ -32,4 +32,8 @@ end
 
 def get_temp_and_summary data
   { temp: data['temperature'], summary: data['summary'], time: Time.at(data['time']) }
+end
+
+def tomorrow? time
+  time.day == Time.now.day + 1
 end

@@ -1,44 +1,35 @@
 require 'sinatra'
-require 'open-uri'
-require 'nokogiri'
+require 'faraday'
 require 'json'
+require 'date'
 
 get '/' do
   erb :shorts_weather
 end
 
-get '/get_weather' do
-  nine_til_four_url = "http://www.accuweather.com/en/gb/isleworth/tw7-6/hourly-weather-forecast/328288?hour=33"
-  weather = get_weather_for(nine_til_four_url)
-  is_it_shorts_weather?(occurances_of_rain(weather[:forecast]), average_temp(weather[:temperatures])).to_s
+get '/get_forecast/:lat/:long' do
+  content_type :json
+  @tomorrows_forecast = tomorrows_hourly_forecast_for(params[:lat], params[:long]).compact
+  {forecast: tomorrows_nine_til_five_forecast}.to_json
 end
 
-def is_it_shorts_weather? occurances_of_rain, average_temp
-  occurances_of_rain <= 2 && average_temp >= 18
+def tomorrows_hourly_forecast_for(lat, long)
+  response = weather.get("#{lat},#{long}?units=si")
+  body = JSON.parse(response.body)
+  body['hourly']['data'].map { |hour| get_temp_and_summary(hour) if (Time.at(hour['time']).day == (DateTime.now + 1).day) }
 end
 
-def get_weather_for url
-  {
-    forecast: get_forecast_for(url),
-    temperatures: get_temps_for(url)
-  }
+def weather
+  Faraday.new("https://api.forecast.io/forecast/c957d1bfacf86b27d11f25b5fd8d4c50") do |faraday|
+    faraday.response :logger
+    faraday.adapter Faraday.default_adapter
+  end
 end
 
-def get_forecast_for time_period
-  data = Nokogiri::HTML(open(time_period))
-  data.at_css("tr.forecast").css("div").map { |hour| hour.text }
+def tomorrows_nine_til_five_forecast
+  @tomorrows_forecast.find_all { |hour| (hour[:time].hour >= 9) && (hour[:time].hour <= 17) }
 end
 
-def get_temps_for time_period
-  data = Nokogiri::HTML(open(time_period))
-  data.at_css("tr.realfeel").css("td").map { |hour| hour.text.scan(/(\d+)/) }
-end
-
-def occurances_of_rain weather
-  occurances = weather.map { |w| w.scan(/(Showers|Rain)/) }
-  occurances.flatten.size
-end
-
-def average_temp temperatures
-  (temperatures.flatten.inject(0) { |sum, temp| sum + temp.to_i }).to_i / temperatures.flatten.size
+def get_temp_and_summary data
+  { temp: data['temperature'], summary: data['summary'], time: Time.at(data['time']) }
 end

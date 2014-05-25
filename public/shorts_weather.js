@@ -1,17 +1,41 @@
 $(document).ready(function(){
-  getWeather();
+  setup();
 });
 
-function getWeather(){
+function setup(){
+  navigator.geolocation.getCurrentPosition(function(position){
+    getWeather(position.coords.latitude, position.coords.longitude);
+  });
+}
+
+function getWeather(lat, long){
   $.ajax({
-    url: "/get_weather"
+    url: "/get_forecast/" + lat + "/" + long
   }).done(function(result){
-    if(result == "true"){
+    if (shortsWeather(result)) {
       setShortsWeather();
     } else {
       setNotShortsWeather();
     }
   });
+}
+
+function shortsWeather(weather){
+  temps = $.map(weather.forecast, function(data){
+    return data.temp;
+  });
+  summary = $.map(weather.forecast, function(data){
+    return data.summary;
+  });
+  return (isHotEnough(temps));
+}
+
+function isHotEnough(temps){
+  var sumOfTemps = 0
+  $(temps).each(function(temp){
+    sumOfTemps += temp;
+  });
+  return ((sumOfTemps / temps.length) >= 18);
 }
 
 function setShortsWeather(){

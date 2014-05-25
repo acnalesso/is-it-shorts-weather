@@ -41,7 +41,7 @@ function shortsWeather(weather){
 
 function isHotEnough(temps){
   var sumOfTemps = 0
-  $(temps).each(function(temp){
+  $(temps).each(function(_, temp){
     sumOfTemps += temp;
   });
   return ((sumOfTemps / temps.length) >= 18);
@@ -49,10 +49,10 @@ function isHotEnough(temps){
 
 function setShortsWeather(){
   $(".answer").addClass("yes");
-  $(".answer").html("Yes");
+  $(".answer").html("Yep!");
 }
 
 function setNotShortsWeather(){
   $(".answer").addClass("no");
-  $(".answer").html("No");
+  $(".answer").html("Nope");
 }

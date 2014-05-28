@@ -1,7 +1,21 @@
 require 'sinatra'
+require 'sinatra/assetpack'
 require 'faraday'
 require 'json'
 require 'date'
+
+register Sinatra::AssetPack
+
+assets {
+    css :main, [
+        '/css/*.css'    
+    ]
+    css_compression :simple
+}
+
+configure do
+    set :bind, '0.0.0.0'
+end
 
 get '/' do
   erb :shorts_weather

@@ -5,40 +5,24 @@ body
   margin: 0
   background-color: #2C343C
 
-
-.question 
+div
   width: 100%
   text-align: center
-  font-size: 44px
-  color: #fff
-  padding: 30px 10px 0
-  box-sizing: border-box
-
-
-.address 
-  width: 100%
-  text-align: center
-  padding: 10px 10px
-  font-size: 18px
-  box-sizing: border-box
-  color: #fff
-  background-color: #57565C
-
-
-.answer 
-  width: 100%
-  text-align: center
-  padding: 30px 10px
   box-sizing: border-box
   background-color: #57565C
-
-
-.no 
-  background-color: #C7463D
-  font-size: 60px
-
-
-.yes 
-  background-color: #75B536
-  font-size: 60px
-
+  color: #fff
+  &.question 
+    font-size: 44px
+    padding: 30px 10px 0
+    background-color: #2C343C
+  &.address 
+    padding: 10px 10px
+    font-size: 18px
+  &.answer 
+    padding: 30px 10px
+    font-size: 60px
+    color: #000
+    &.no 
+      background-color: #C7463D
+    &.yes 
+      background-color: #75B536
